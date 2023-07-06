@@ -9,6 +9,10 @@ const overlay = document.querySelector(".overlay");
 const btnCloseModal = document.querySelector(".btn--close-modal");
 const btnsOpenModal = document.querySelectorAll(".btn--show-modal");
 
+const tabs = document.querySelectorAll(".operations__tab");
+const tabsContainer = document.querySelector(".operations__tab-container");
+const tabsContent = document.querySelectorAll(".operations__content");
+
 ///////////////////////////////////////
 // Modal window
 const openModal = function (event) {
@@ -69,4 +73,27 @@ btnScrollTo.addEventListener("click", function (event) {
   section1.scrollIntoView({
     behavior: "smooth",
   });
+});
+
+//Tabbed component
+tabsContainer.addEventListener("click", function (event) {
+  const btnClicked = event.target.closest(".operations__tab");
+
+  //Guard clause -- if statement that return earlier if the condition is true
+  if (!btnClicked) return;
+
+  //Remove active classes
+  tabs.forEach((tab) => tab.classList.remove("operations__tab--active"));
+  tabsContent.forEach((content) =>
+    content.classList.remove("operations__content--active")
+  );
+
+  //Active tab
+  btnClicked.classList.add("operations__tab--active");
+
+  //Activate content area
+  const tab = btnClicked.dataset.tab;
+  document
+    .querySelector(`.operations__content--${tab}`)
+    .classList.add("operations__content--active");
 });
