@@ -1,6 +1,8 @@
 "use strict";
 
 //Elements selected
+const nav = document.querySelector(".nav");
+
 const btnScrollTo = document.querySelector(".btn--scroll-to");
 const section1 = document.querySelector("#section--1");
 
@@ -77,7 +79,7 @@ btnScrollTo.addEventListener("click", function (event) {
 
 //Tabbed component
 tabsContainer.addEventListener("click", function (event) {
-  const btnClicked = event.target.closest(".operations__tab");
+  const btnClicked = event.target.closest(".operations__tab"); //Use closest method since there are child elements that cab be clicked instead
 
   //Guard clause -- if statement that return earlier if the condition is true
   if (!btnClicked) return;
@@ -97,3 +99,26 @@ tabsContainer.addEventListener("click", function (event) {
     .querySelector(`.operations__content--${tab}`)
     .classList.add("operations__content--active");
 });
+
+//Menu fade animation
+
+const handlerHover = function (opacity) {
+  return function (event) {
+    const linkHovered = event.target;
+    if (linkHovered.classList.contains("nav__link")) {
+      const siblings = linkHovered
+        .closest(".nav")
+        .querySelectorAll(".nav__link");
+      const logo = linkHovered.closest(".nav").querySelector(".nav__logo");
+
+      siblings.forEach((el) => {
+        if (el !== linkHovered) el.style.opacity = opacity;
+        logo.style.opacity = opacity;
+      });
+    }
+  };
+};
+
+nav.addEventListener("mouseover", handlerHover(0.5));
+
+nav.addEventListener("mouseout", handlerHover(1));
