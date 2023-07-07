@@ -3,6 +3,7 @@
 //Elements selected
 const header = document.querySelector(".header");
 const nav = document.querySelector(".nav");
+const sections = document.querySelectorAll(".section");
 
 const btnScrollTo = document.querySelector(".btn--scroll-to");
 const section1 = document.querySelector("#section--1");
@@ -124,7 +125,7 @@ nav.addEventListener("mouseover", handlerHover(0.5));
 
 nav.addEventListener("mouseout", handlerHover(1));
 
-//Sticky navigation: Intersection Observed API
+//Sticky navigation - Intersection Observed API
 const navHeight = nav.getBoundingClientRect().height;
 
 const stickyNav = function (entries) {
@@ -135,5 +136,26 @@ const stickyNav = function (entries) {
 };
 
 const obsOptions = { root: null, threshold: 0, rootMargin: `-${navHeight}px` };
-const observer = new IntersectionObserver(stickyNav, obsOptions);
-observer.observe(header);
+const headerObserver = new IntersectionObserver(stickyNav, obsOptions);
+headerObserver.observe(header);
+
+//Revealing sections animation
+const revealSection = function (entries, observer) {
+  const [entry] = entries;
+  console.log(entry);
+
+  if (!entry.isIntersecting) return;
+  entry.target.classList.remove("section--hidden");
+
+  observer.unobserve(entry.target);
+};
+
+const sectionObserver = new IntersectionObserver(revealSection, {
+  root: null,
+  threshold: 0.15,
+});
+
+sections.forEach((section) => {
+  sectionObserver.observe(section);
+  section.classList.add("section--hidden");
+});
